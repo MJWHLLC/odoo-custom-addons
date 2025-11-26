@@ -6,7 +6,7 @@
         <field name="model">vendor.import.wizard</field>
         <field name="arch" type="xml">
             <form string="Import Products from Vendor">
-                <group attrs="{'invisible': [('state', '!=', 'draft')]}">
+                <group invisible="state != 'draft'">
                     <group>
                         <field name="vendor_id"/>
                         <field name="import_type"/>
@@ -17,7 +17,7 @@
                     </group>
                 </group>
                 
-                <group attrs="{'invisible': [('state', '!=', 'preview')]}">
+                <group invisible="state != 'preview'">
                     <group>
                         <field name="vendor_id" readonly="1"/>
                         <field name="import_type" readonly="1"/>
@@ -29,7 +29,7 @@
                     <field name="preview_message" colspan="2"/>
                 </group>
                 
-                <group attrs="{'invisible': [('state', '!=', 'done')]}">
+                <group invisible="state != 'done'">
                     <group>
                         <field name="vendor_id" readonly="1"/>
                         <field name="products_created"/>
@@ -44,10 +44,10 @@
                 <field name="state" invisible="1"/>
                 
                 <footer>
-                    <button string="Preview" name="action_preview" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                    <button string="Import" name="action_import" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'preview')]}"/>
-                    <button string="View Import Log" name="action_view_import_log" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'done')]}"/>
-                    <button string="View Products" name="action_view_products" type="object" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                    <button string="Preview" name="action_preview" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button string="Import" name="action_import" type="object" class="btn-primary" invisible="state != 'preview'"/>
+                    <button string="View Import Log" name="action_view_import_log" type="object" class="btn-primary" invisible="state != 'done'"/>
+                    <button string="View Products" name="action_view_products" type="object" invisible="state != 'done'"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

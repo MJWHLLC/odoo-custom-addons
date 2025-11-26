@@ -11,8 +11,8 @@
                 <field name="min_cost"/>
                 <field name="max_cost"/>
                 <field name="pricing_method"/>
-                <field name="markup_percentage" attrs="{'invisible': [('pricing_method', '!=', 'percentage')]}"/>
-                <field name="fixed_amount" attrs="{'invisible': [('pricing_method', '!=', 'fixed')]}"/>
+                <field name="markup_percentage" invisible="pricing_method != 'percentage'"/>
+                <field name="fixed_amount" invisible="pricing_method != 'fixed'"/>
                 <field name="round_price"/>
                 <field name="active"/>
             </tree>
@@ -42,12 +42,12 @@
                         </group>
                         <group name="pricing">
                             <field name="pricing_method"/>
-                            <field name="markup_percentage" attrs="{'invisible': [('pricing_method', '!=', 'percentage')], 'required': [('pricing_method', '=', 'percentage')]}"/>
-                            <field name="fixed_amount" attrs="{'invisible': [('pricing_method', '!=', 'fixed')], 'required': [('pricing_method', '=', 'fixed')]}"/>
+                            <field name="markup_percentage" invisible="pricing_method != 'percentage'" required="pricing_method == 'percentage'"/>
+                            <field name="fixed_amount" invisible="pricing_method != 'fixed'" required="pricing_method == 'fixed'"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Pricing Formula" name="formula" attrs="{'invisible': [('pricing_method', '!=', 'formula')]}">
+                        <page string="Pricing Formula" name="formula" invisible="pricing_method != 'formula'">
                             <group>
                                 <field name="price_formula" placeholder="cost * 1.3 + 5.0"/>
                             </group>
@@ -56,8 +56,8 @@
                             <group>
                                 <group>
                                     <field name="round_price"/>
-                                    <field name="rounding_method" attrs="{'invisible': [('round_price', '=', False)]}"/>
-                                    <field name="rounding_precision" attrs="{'invisible': [('round_price', '=', False)]}"/>
+                                    <field name="rounding_method" invisible="round_price == False"/>
+                                    <field name="rounding_precision" invisible="round_price == False"/>
                                 </group>
                                 <group>
                                     <field name="min_profit_amount"/>

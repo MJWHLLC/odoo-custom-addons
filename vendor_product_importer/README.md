@@ -1,7 +1,7 @@
 # Vendor Product Importer Module
 
 ## Overview
-This Odoo 17 module automates the import and maintenance of product pages from online vendors (Amazon, eBay, Shopify, and generic websites) while ensuring profitable pricing through tiered pricing rules.
+This Odoo 19 module automates the import and maintenance of product pages from online vendors (Amazon, eBay, Shopify, and generic websites) while ensuring profitable pricing through tiered pricing rules.
 
 ## Features
 - **Multi-Platform Support**: Amazon, eBay, Shopify, and generic HTML scraping
@@ -145,4 +145,4 @@ For issues or questions, please contact your system administrator.
 LGPL-3
 
 ## Version
-17.0.1.0.0
+19.0.1.0.0

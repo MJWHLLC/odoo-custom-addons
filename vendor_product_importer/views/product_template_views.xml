@@ -8,14 +8,14 @@
         <field name="arch" type="xml">
             <!-- Add Vendor Info button -->
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_vendor_info" type="object" class="oe_stat_button" icon="fa-shopping-cart" attrs="{'invisible': [('is_imported', '=', False)]}">
+                <button name="action_view_vendor_info" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="is_imported == False">
                     <field name="vendor_count" widget="statinfo" string="Vendors"/>
                 </button>
             </xpath>
             
             <!-- Add Vendor Information page -->
             <xpath expr="//notebook" position="inside">
-                <page string="Vendor Information" name="vendor_info" attrs="{'invisible': [('is_imported', '=', False)]}">
+                <page string="Vendor Information" name="vendor_info" invisible="is_imported == False">
                     <group>
                         <group name="vendor_pricing">
                             <field name="is_imported" invisible="1"/>
@@ -112,14 +112,14 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Transformation" name="transformation" attrs="{'invisible': [('transformation_type', '=', 'direct')]}">
+                        <page string="Transformation" name="transformation" invisible="transformation_type == 'direct'">
                             <group>
-                                <field name="transformation_code" attrs="{'invisible': [('transformation_type', '!=', 'python')]}" placeholder="# Python code to transform value&#10;# Available: value, env, record&#10;result = value.upper()"/>
-                                <field name="regex_pattern" attrs="{'invisible': [('transformation_type', '!=', 'regex')]}"/>
-                                <field name="regex_replacement" attrs="{'invisible': [('transformation_type', '!=', 'regex')]}"/>
+                                <field name="transformation_code" invisible="transformation_type != 'python'" placeholder="# Python code to transform value&#10;# Available: value, env, record&#10;result = value.upper()"/>
+                                <field name="regex_pattern" invisible="transformation_type != 'regex'"/>
+                                <field name="regex_replacement" invisible="transformation_type != 'regex'"/>
                             </group>
                         </page>
-                        <page string="Value Mapping" name="value_mapping" attrs="{'invisible': [('transformation_type', '!=', 'mapping')]}">
+                        <page string="Value Mapping" name="value_mapping" invisible="transformation_type != 'mapping'">
                             <field name="value_mapping_ids">
                                 <tree editable="bottom">
                                     <field name="vendor_value"/>

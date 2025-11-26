@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Vendor Product Importer',
-    'version': '17.0.1.0.0',
+    'version': '19.0.1.0.0',
     'category': 'Sales/Sales',
     'summary': 'Import and maintain products from online vendors with automated pricing',
     'description': """

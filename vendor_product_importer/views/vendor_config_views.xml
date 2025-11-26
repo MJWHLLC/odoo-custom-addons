@@ -65,14 +65,14 @@
                                     <field name="access_token" password="True"/>
                                 </group>
                                 <group string="Platform Specific" name="platform_specific">
-                                    <field name="amazon_marketplace" attrs="{'invisible': [('vendor_type', '!=', 'amazon')]}"/>
-                                    <field name="amazon_associate_tag" attrs="{'invisible': [('vendor_type', '!=', 'amazon')]}"/>
-                                    <field name="ebay_site_id" attrs="{'invisible': [('vendor_type', '!=', 'ebay')]}"/>
-                                    <field name="shopify_store_name" attrs="{'invisible': [('vendor_type', '!=', 'shopify')]}"/>
+                                    <field name="amazon_marketplace" invisible="vendor_type != 'amazon'"/>
+                                    <field name="amazon_associate_tag" invisible="vendor_type != 'amazon'"/>
+                                    <field name="ebay_site_id" invisible="vendor_type != 'ebay'"/>
+                                    <field name="shopify_store_name" invisible="vendor_type != 'shopify'"/>
                                 </group>
                             </group>
                         </page>
-                        <page string="Scraping Configuration" name="scraping_config" attrs="{'invisible': [('vendor_type', '!=', 'generic')]}">
+                        <page string="Scraping Configuration" name="scraping_config" invisible="vendor_type != 'generic'">
                             <group>
                                 <group string="Product List Page" name="list_page">
                                     <field name="product_list_url"/>
