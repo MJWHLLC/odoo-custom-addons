@@ -27,7 +27,7 @@ Key Features:
 * Comprehensive logging and reporting
     """,
     'author': 'MJ Wilkerson Holdings LLC',
-    'website': 'https://www.mj-wilkerson-holdings-llc.com',
+    'website': 'https://mj-wilkerson-holdings-llc.odoo.com',
     'maintainer': 'MJ Wilkerson Holdings LLC',
     'support': 'info@mj-wilkerson-holdings-llc.odoo.com',
     'license': 'LGPL-3',
