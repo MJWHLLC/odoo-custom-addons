@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vendor_config_user,vendor.config.user,model_vendor_config,base.group_user,1,1,1,0
+access_vendor_config_manager,vendor.config.manager,model_vendor_config,base.group_system,1,1,1,1
+access_product_price_tier_user,product.price.tier.user,model_product_price_tier,base.group_user,1,0,0,0
+access_product_price_tier_manager,product.price.tier.manager,model_product_price_tier,base.group_system,1,1,1,1
+access_product_vendor_info_user,product.vendor.info.user,model_product_vendor_info,base.group_user,1,1,1,0
+access_product_vendor_info_manager,product.vendor.info.manager,model_product_vendor_info,base.group_system,1,1,1,1
+access_vendor_import_log_user,vendor.import.log.user,model_vendor_import_log,base.group_user,1,0,0,0
+access_vendor_import_log_manager,vendor.import.log.manager,model_vendor_import_log,base.group_system,1,1,1,1
+access_vendor_import_log_line_user,vendor.import.log.line.user,model_vendor_import_log_line,base.group_user,1,0,0,0
+access_vendor_import_log_line_manager,vendor.import.log.line.manager,model_vendor_import_log_line,base.group_system,1,1,1,1
+access_product_field_mapping_user,product.field.mapping.user,model_product_field_mapping,base.group_user,1,0,0,0
+access_product_field_mapping_manager,product.field.mapping.manager,model_product_field_mapping,base.group_system,1,1,1,1
+access_vendor_import_wizard,vendor.import.wizard,model_vendor_import_wizard,base.group_user,1,1,1,1
+access_price_update_wizard,price.update.wizard,model_price_update_wizard,base.group_user,1,1,1,1
+access_price_update_wizard_line,price.update.wizard.line,model_price_update_wizard_line,base.group_user,1,1,1,1

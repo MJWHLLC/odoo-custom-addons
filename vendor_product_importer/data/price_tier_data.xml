@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Price Tiers -->
+        
+        <!-- Tier 1: Low Cost Items ($0-$50) - 40% markup -->
+        <record id="price_tier_low_cost" model="product.price.tier">
+            <field name="name">Tier 1: Low Cost (40% markup)</field>
+            <field name="sequence">10</field>
+            <field name="min_cost">0.0</field>
+            <field name="max_cost">50.0</field>
+            <field name="pricing_method">percentage</field>
+            <field name="markup_percentage">40.0</field>
+            <field name="round_price" eval="True"/>
+            <field name="rounding_method">nearest</field>
+            <field name="rounding_precision">0.99</field>
+            <field name="min_profit_percentage">30.0</field>
+            <field name="active" eval="True"/>
+            <field name="notes">For low-cost items under $50. Applies 40% markup to ensure good profit margins on smaller items.</field>
+        </record>
+
+        <!-- Tier 2: Medium Cost Items ($51-$200) - 30% markup -->
+        <record id="price_tier_medium_cost" model="product.price.tier">
+            <field name="name">Tier 2: Medium Cost (30% markup)</field>
+            <field name="sequence">20</field>
+            <field name="min_cost">50.01</field>
+            <field name="max_cost">200.0</field>
+            <field name="pricing_method">percentage</field>
+            <field name="markup_percentage">30.0</field>
+            <field name="round_price" eval="True"/>
+            <field name="rounding_method">nearest</field>
+            <field name="rounding_precision">0.99</field>
+            <field name="min_profit_percentage">25.0</field>
+            <field name="active" eval="True"/>
+            <field name="notes">For medium-cost items $51-$200. Applies 30% markup for competitive pricing while maintaining profitability.</field>
+        </record>
+
+        <!-- Tier 3: High Cost Items ($201-$500) - 25% markup -->
+        <record id="price_tier_high_cost" model="product.price.tier">
+            <field name="name">Tier 3: High Cost (25% markup)</field>
+            <field name="sequence">30</field>
+            <field name="min_cost">200.01</field>
+            <field name="max_cost">500.0</field>
+            <field name="pricing_method">percentage</field>
+            <field name="markup_percentage">25.0</field>
+            <field name="round_price" eval="True"/>
+            <field name="rounding_method">nearest</field>
+            <field name="rounding_precision">0.99</field>
+            <field name="min_profit_percentage">20.0</field>
+            <field name="active" eval="True"/>
+            <field name="notes">For high-cost items $201-$500. Applies 25% markup to remain competitive on higher-priced products.</field>
+        </record>
+
+        <!-- Tier 4: Premium Items ($501+) - 20% markup -->
+        <record id="price_tier_premium" model="product.price.tier">
+            <field name="name">Tier 4: Premium (20% markup)</field>
+            <field name="sequence">40</field>
+            <field name="min_cost">500.01</field>
+            <field name="max_cost">999999.0</field>
+            <field name="pricing_method">percentage</field>
+            <field name="markup_percentage">20.0</field>
+            <field name="round_price" eval="True"/>
+            <field name="rounding_method">nearest</field>
+            <field name="rounding_precision">0.99</field>
+            <field name="min_profit_percentage">15.0</field>
+            <field name="active" eval="True"/>
+            <field name="notes">For premium items over $500. Applies 20% markup to maintain competitive pricing on expensive products while ensuring profitability.</field>
+        </record>
+    </data>
+</odoo>

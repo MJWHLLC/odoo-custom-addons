@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vendor Config Tree View -->
+    <record id="view_vendor_config_tree" model="ir.ui.view">
+        <field name="name">vendor.config.tree</field>
+        <field name="model">vendor.config</field>
+        <field name="arch" type="xml">
+            <tree string="Vendors">
+                <field name="name"/>
+                <field name="vendor_type"/>
+                <field name="website_url"/>
+                <field name="import_frequency"/>
+                <field name="last_import_date"/>
+                <field name="next_import_date"/>
+                <field name="product_count"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vendor Config Form View -->
+    <record id="view_vendor_config_form" model="ir.ui.view">
+        <field name="name">vendor.config.form</field>
+        <field name="model">vendor.config</field>
+        <field name="arch" type="xml">
+            <form string="Vendor Configuration">
+                <header>
+                    <button name="action_test_connection" string="Test Connection" type="object" class="oe_highlight"/>
+                    <button name="action_import_products" string="Import Products" type="object" class="oe_highlight"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_products" type="object" class="oe_stat_button" icon="fa-cubes">
+                            <field name="product_count" widget="statinfo" string="Products"/>
+                        </button>
+                        <button name="action_view_import_logs" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="import_log_count" widget="statinfo" string="Import Logs"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Vendor Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="basic_info">
+                            <field name="vendor_type"/>
+                            <field name="website_url" widget="url"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group name="import_settings">
+                            <field name="import_frequency"/>
+                            <field name="last_import_date" readonly="1"/>
+                            <field name="next_import_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="API Configuration" name="api_config">
+                            <group>
+                                <group string="General API Settings" name="api_general">
+                                    <field name="api_endpoint"/>
+                                    <field name="api_key" password="True"/>
+                                    <field name="api_secret" password="True"/>
+                                    <field name="access_token" password="True"/>
+                                </group>
+                                <group string="Platform Specific" name="platform_specific">
+                                    <field name="amazon_marketplace" attrs="{'invisible': [('vendor_type', '!=', 'amazon')]}"/>
+                                    <field name="amazon_associate_tag" attrs="{'invisible': [('vendor_type', '!=', 'amazon')]}"/>
+                                    <field name="ebay_site_id" attrs="{'invisible': [('vendor_type', '!=', 'ebay')]}"/>
+                                    <field name="shopify_store_name" attrs="{'invisible': [('vendor_type', '!=', 'shopify')]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Scraping Configuration" name="scraping_config" attrs="{'invisible': [('vendor_type', '!=', 'generic')]}">
+                            <group>
+                                <group string="Product List Page" name="list_page">
+                                    <field name="product_list_url"/>
+                                    <field name="product_list_selector"/>
+                                    <field name="product_link_selector"/>
+                                </group>
+                                <group string="Product Field Selectors" name="field_selectors">
+                                    <field name="name_selector"/>
+                                    <field name="price_selector"/>
+                                    <field name="description_selector"/>
+                                    <field name="image_selector"/>
+                                    <field name="sku_selector"/>
+                                    <field name="ean_selector"/>
+                                    <field name="category_selector"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Import Settings" name="import_settings_page">
+                            <group>
+                                <group string="Automation" name="automation">
+                                    <field name="auto_update_prices"/>
+                                    <field name="auto_update_stock"/>
+                                    <field name="auto_create_products"/>
+                                </group>
+                                <group string="Filters" name="filters">
+                                    <field name="min_price"/>
+                                    <field name="max_price"/>
+                                    <field name="category_filter"/>
+                                    <field name="exclude_categories"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Legal Compliance" name="compliance">
+                            <group>
+                                <field name="exclude_keywords" placeholder="One keyword per line"/>
+                                <field name="exclude_brands" placeholder="One brand per line"/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Additional notes about this vendor..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vendor Config Kanban View -->
+    <record id="view_vendor_config_kanban" model="ir.ui.view">
+        <field name="name">vendor.config.kanban</field>
+        <field name="model">vendor.config</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="vendor_type"/>
+                <field name="product_count"/>
+                <field name="last_import_date"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img alt="Vendor" t-att-src="kanban_image('vendor.config', 'image_128', record.id.raw_value)"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div class="o_kanban_tags_section">
+                                    <field name="vendor_type" widget="badge"/>
+                                </div>
+                                <ul>
+                                    <li><field name="product_count"/> Products</li>
+                                    <li>Last Import: <field name="last_import_date"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vendor Config Search View -->
+    <record id="view_vendor_config_search" model="ir.ui.view">
+        <field name="name">vendor.config.search</field>
+        <field name="model">vendor.config</field>
+        <field name="arch" type="xml">
+            <search string="Search Vendors">
+                <field name="name"/>
+                <field name="vendor_type"/>
+                <field name="website_url"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Amazon" name="amazon" domain="[('vendor_type', '=', 'amazon')]"/>
+                <filter string="eBay" name="ebay" domain="[('vendor_type', '=', 'ebay')]"/>
+                <filter string="Shopify" name="shopify" domain="[('vendor_type', '=', 'shopify')]"/>
+                <filter string="Generic" name="generic" domain="[('vendor_type', '=', 'generic')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Vendor Type" name="group_vendor_type" context="{'group_by': 'vendor_type'}"/>
+                    <filter string="Import Frequency" name="group_frequency" context="{'group_by': 'import_frequency'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vendor Config Action -->
+    <record id="action_vendor_config" model="ir.actions.act_window">
+        <field name="name">Vendors</field>
+        <field name="res_model">vendor.config</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first vendor configuration
+            </p>
+            <p>
+                Configure vendors to automatically import products and maintain pricing.
+            </p>
+        </field>
+    </record>
+</odoo>

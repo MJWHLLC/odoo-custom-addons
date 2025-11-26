@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_3d_cad_root" name="3D CAD Integration" sequence="10"/>
+    <menuitem id="menu_3d_cad_view" name="3D CAD Viewer" parent="menu_3d_cad_root" action="action_3d_cad_viewer" sequence="10"/>
+
+    <record id="view_3d_cad_form" model="ir.ui.view">
+        <field name="name">cad.viewer.form</field>
+        <field name="model">cad.viewer</field>
+        <field name="arch" type="xml">
+            <form string="3D CAD Viewer">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <field name="url" widget="url" options="{'no_open': True}"/>
+                    <div>
+                        <iframe t-att-src="record.url.raw_value" width="100%" height="600px" frameborder="0"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_3d_cad_viewer" model="ir.actions.act_window">
+        <field name="name">3D CAD Viewer</field>
+        <field name="res_model">cad.viewer</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_3d_cad_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

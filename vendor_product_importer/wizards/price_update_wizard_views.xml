@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Price Update Wizard Form View -->
+    <record id="view_price_update_wizard_form" model="ir.ui.view">
+        <field name="name">price.update.wizard.form</field>
+        <field name="model">price.update.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Price Update">
+                <group attrs="{'invisible': [('state', '!=', 'draft')]}">
+                    <group>
+                        <field name="update_scope"/>
+                        <field name="vendor_id" attrs="{'invisible': [('update_scope', '!=', 'vendor')], 'required': [('update_scope', '=', 'vendor')]}"/>
+                        <field name="product_ids" widget="many2many_tags" attrs="{'invisible': [('update_scope', '!=', 'selection')], 'required': [('update_scope', '=', 'selection')]}"/>
+                    </group>
+                    <group>
+                        <field name="price_source"/>
+                        <field name="manual_price" attrs="{'invisible': [('price_source', '!=', 'manual')], 'required': [('price_source', '=', 'manual')]}"/>
+                        <field name="apply_tiers"/>
+                        <field name="products_to_update"/>
+                    </group>
+                </group>
+                
+                <group attrs="{'invisible': [('state', '!=', 'preview')]}">
+                    <field name="preview_lines" nolabel="1" colspan="2">
+                        <tree decoration-success="price_change_percent > 0" decoration-danger="price_change_percent < 0">
+                            <field name="product_name"/>
+                            <field name="current_price" widget="monetary"/>
+                            <field name="new_price" widget="monetary"/>
+                            <field name="price_change" widget="monetary"/>
+                            <field name="price_change_percent" widget="percentage"/>
+                        </tree>
+                    </field>
+                </group>
+                
+                <group attrs="{'invisible': [('state', '!=', 'done')]}">
+                    <group>
+                        <field name="products_updated"/>
+                        <field name="products_failed"/>
+                    </group>
+                </group>
+                
+                <field name="state" invisible="1"/>
+                
+                <footer>
+                    <button string="Preview" name="action_preview" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button string="Update Prices" name="action_update_prices" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'preview')]}"/>
+                    <button string="Close" class="btn-primary" special="cancel" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" attrs="{'invisible': [('state', '=', 'done')]}"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Price Update Wizard Action -->
+    <record id="action_price_update_wizard" model="ir.actions.act_window">
+        <field name="name">Update Prices</field>
+        <field name="res_model">price.update.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

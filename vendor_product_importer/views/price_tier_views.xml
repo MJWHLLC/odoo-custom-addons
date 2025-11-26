@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Price Tier Tree View -->
+    <record id="view_product_price_tier_tree" model="ir.ui.view">
+        <field name="name">product.price.tier.tree</field>
+        <field name="model">product.price.tier</field>
+        <field name="arch" type="xml">
+            <tree string="Price Tiers" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="min_cost"/>
+                <field name="max_cost"/>
+                <field name="pricing_method"/>
+                <field name="markup_percentage" attrs="{'invisible': [('pricing_method', '!=', 'percentage')]}"/>
+                <field name="fixed_amount" attrs="{'invisible': [('pricing_method', '!=', 'fixed')]}"/>
+                <field name="round_price"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Price Tier Form View -->
+    <record id="view_product_price_tier_form" model="ir.ui.view">
+        <field name="name">product.price.tier.form</field>
+        <field name="model">product.price.tier</field>
+        <field name="arch" type="xml">
+            <form string="Price Tier">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="active" widget="boolean_toggle"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Tier Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="cost_range">
+                            <field name="sequence"/>
+                            <field name="min_cost"/>
+                            <field name="max_cost"/>
+                        </group>
+                        <group name="pricing">
+                            <field name="pricing_method"/>
+                            <field name="markup_percentage" attrs="{'invisible': [('pricing_method', '!=', 'percentage')], 'required': [('pricing_method', '=', 'percentage')]}"/>
+                            <field name="fixed_amount" attrs="{'invisible': [('pricing_method', '!=', 'fixed')], 'required': [('pricing_method', '=', 'fixed')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Pricing Formula" name="formula" attrs="{'invisible': [('pricing_method', '!=', 'formula')]}">
+                            <group>
+                                <field name="price_formula" placeholder="cost * 1.3 + 5.0"/>
+                            </group>
+                        </page>
+                        <page string="Rounding" name="rounding">
+                            <group>
+                                <group>
+                                    <field name="round_price"/>
+                                    <field name="rounding_method" attrs="{'invisible': [('round_price', '=', False)]}"/>
+                                    <field name="rounding_precision" attrs="{'invisible': [('round_price', '=', False)]}"/>
+                                </group>
+                                <group>
+                                    <field name="min_profit_amount"/>
+                                    <field name="min_profit_percentage"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Filters" name="filters">
+                            <group>
+                                <field name="categ_ids" widget="many2many_tags"/>
+                                <field name="vendor_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Additional notes about this tier..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Price Tier Search View -->
+    <record id="view_product_price_tier_search" model="ir.ui.view">
+        <field name="name">product.price.tier.search</field>
+        <field name="model">product.price.tier</field>
+        <field name="arch" type="xml">
+            <search string="Search Price Tiers">
+                <field name="name"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Percentage Markup" name="percentage" domain="[('pricing_method', '=', 'percentage')]"/>
+                <filter string="Fixed Amount" name="fixed" domain="[('pricing_method', '=', 'fixed')]"/>
+                <filter string="Custom Formula" name="formula" domain="[('pricing_method', '=', 'formula')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Pricing Method" name="group_method" context="{'group_by': 'pricing_method'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Price Tier Action -->
+    <record id="action_product_price_tier" model="ir.actions.act_window">
+        <field name="name">Price Tiers</field>
+        <field name="res_model">product.price.tier</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first price tier
+            </p>
+            <p>
+                Define pricing tiers based on cost ranges to automatically calculate profitable sale prices.
+            </p>
+        </field>
+    </record>
+</odoo>

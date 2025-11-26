@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Import Log Tree View -->
+    <record id="view_vendor_import_log_tree" model="ir.ui.view">
+        <field name="name">vendor.import.log.tree</field>
+        <field name="model">vendor.import.log</field>
+        <field name="arch" type="xml">
+            <tree string="Import Logs" decoration-success="state=='done'" decoration-danger="state=='error'" decoration-info="state=='in_progress'">
+                <field name="vendor_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="import_type"/>
+                <field name="products_created"/>
+                <field name="products_updated"/>
+                <field name="products_failed"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Import Log Form View -->
+    <record id="view_vendor_import_log_form" model="ir.ui.view">
+        <field name="name">vendor.import.log.form</field>
+        <field name="model">vendor.import.log</field>
+        <field name="arch" type="xml">
+            <form string="Import Log">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_products" type="object" class="oe_stat_button" icon="fa-cubes">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="products_created"/> / <field name="products_updated"/>
+                                </span>
+                                <span class="o_stat_text">Created / Updated</span>
+                            </div>
+                        </button>
+                        <button name="action_view_failed_products" type="object" class="oe_stat_button" icon="fa-exclamation-triangle" attrs="{'invisible': [('products_failed', '=', 0)]}">
+                            <field name="products_failed" widget="statinfo" string="Failed"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group name="basic_info">
+                            <field name="vendor_id"/>
+                            <field name="import_type"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group name="statistics">
+                            <field name="products_created"/>
+                            <field name="products_updated"/>
+                            <field name="products_failed"/>
+                            <field name="total_products"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Import Details" name="details">
+                            <field name="import_line_ids">
+                                <tree decoration-success="status=='success'" decoration-danger="status=='error'">
+                                    <field name="product_tmpl_id"/>
+                                    <field name="vendor_product_id"/>
+                                    <field name="action_taken"/>
+                                    <field name="status"/>
+                                    <field name="error_message" attrs="{'invisible': [('status', '!=', 'error')]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Import notes and messages..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Import Log Search View -->
+    <record id="view_vendor_import_log_search" model="ir.ui.view">
+        <field name="name">vendor.import.log.search</field>
+        <field name="model">vendor.import.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Import Logs">
+                <field name="vendor_id"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Error" name="error" domain="[('state', '=', 'error')]"/>
+                <separator/>
+                <filter string="Manual" name="manual" domain="[('import_type', '=', 'manual')]"/>
+                <filter string="Scheduled" name="scheduled" domain="[('import_type', '=', 'scheduled')]"/>
+                <separator/>
+                <filter string="Today" name="today" domain="[('start_date', '>=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Week" name="this_week" domain="[('start_date', '>=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="this_month" domain="[('start_date', '>=', (context_today().replace(day=1)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Vendor" name="group_vendor" context="{'group_by': 'vendor_id'}"/>
+                    <filter string="Import Type" name="group_type" context="{'group_by': 'import_type'}"/>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'start_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Import Log Action -->
+    <record id="action_vendor_import_log" model="ir.actions.act_window">
+        <field name="name">Import Logs</field>
+        <field name="res_model">vendor.import.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_this_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No import logs found
+            </p>
+            <p>
+                Import logs are automatically created when products are imported from vendors.
+            </p>
+        </field>
+    </record>
+</odoo>

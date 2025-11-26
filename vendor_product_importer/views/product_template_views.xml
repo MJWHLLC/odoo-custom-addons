@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Product Template Form View -->
+    <record id="view_product_template_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add Vendor Info button -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_vendor_info" type="object" class="oe_stat_button" icon="fa-shopping-cart" attrs="{'invisible': [('is_imported', '=', False)]}">
+                    <field name="vendor_count" widget="statinfo" string="Vendors"/>
+                </button>
+            </xpath>
+            
+            <!-- Add Vendor Information page -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Vendor Information" name="vendor_info" attrs="{'invisible': [('is_imported', '=', False)]}">
+                    <group>
+                        <group name="vendor_pricing">
+                            <field name="is_imported" invisible="1"/>
+                            <field name="best_vendor_id"/>
+                            <field name="best_vendor_cost"/>
+                            <field name="primary_vendor_id"/>
+                        </group>
+                        <group name="import_info">
+                            <field name="last_vendor_sync"/>
+                            <field name="vendor_sync_status"/>
+                        </group>
+                    </group>
+                    <field name="vendor_info_ids">
+                        <tree editable="bottom">
+                            <field name="vendor_id"/>
+                            <field name="vendor_product_id"/>
+                            <field name="vendor_cost"/>
+                            <field name="calculated_sale_price"/>
+                            <field name="profit_margin"/>
+                            <field name="vendor_stock_status"/>
+                            <field name="is_primary_vendor"/>
+                            <field name="last_sync_date"/>
+                            <button name="action_sync_from_vendor" string="Sync" type="object" icon="fa-refresh"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Imported Products Action -->
+    <record id="action_imported_products" model="ir.actions.act_window">
+        <field name="name">Imported Products</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('is_imported', '=', True)]</field>
+        <field name="context">{'search_default_is_imported': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No imported products found
+            </p>
+            <p>
+                Products will appear here after importing from vendors.
+            </p>
+        </field>
+    </record>
+
+    <!-- Product Template Search View Extension -->
+    <record id="view_product_template_search_inherit" model="ir.ui.view">
+        <field name="name">product.template.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="Imported Products" name="is_imported" domain="[('is_imported', '=', True)]"/>
+                <filter string="Best Vendor Available" name="has_best_vendor" domain="[('best_vendor_id', '!=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Field Mapping Tree View -->
+    <record id="view_product_field_mapping_tree" model="ir.ui.view">
+        <field name="name">product.field.mapping.tree</field>
+        <field name="model">product.field.mapping</field>
+        <field name="arch" type="xml">
+            <tree string="Field Mappings" editable="bottom">
+                <field name="vendor_id"/>
+                <field name="vendor_field"/>
+                <field name="odoo_field"/>
+                <field name="transformation_type"/>
+                <field name="default_value"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Field Mapping Form View -->
+    <record id="view_product_field_mapping_form" model="ir.ui.view">
+        <field name="name">product.field.mapping.form</field>
+        <field name="model">product.field.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Field Mapping">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="vendor_id"/>
+                            <field name="vendor_field"/>
+                            <field name="odoo_field"/>
+                        </group>
+                        <group>
+                            <field name="transformation_type"/>
+                            <field name="default_value"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Transformation" name="transformation" attrs="{'invisible': [('transformation_type', '=', 'direct')]}">
+                            <group>
+                                <field name="transformation_code" attrs="{'invisible': [('transformation_type', '!=', 'python')]}" placeholder="# Python code to transform value&#10;# Available: value, env, record&#10;result = value.upper()"/>
+                                <field name="regex_pattern" attrs="{'invisible': [('transformation_type', '!=', 'regex')]}"/>
+                                <field name="regex_replacement" attrs="{'invisible': [('transformation_type', '!=', 'regex')]}"/>
+                            </group>
+                        </page>
+                        <page string="Value Mapping" name="value_mapping" attrs="{'invisible': [('transformation_type', '!=', 'mapping')]}">
+                            <field name="value_mapping_ids">
+                                <tree editable="bottom">
+                                    <field name="vendor_value"/>
+                                    <field name="odoo_value"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Field Mapping Action -->
+    <record id="action_product_field_mapping" model="ir.actions.act_window">
+        <field name="name">Field Mappings</field>
+        <field name="res_model">product.field.mapping</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create field mappings
+            </p>
+            <p>
+                Define how vendor fields map to Odoo product fields.
+            </p>
+        </field>
+    </record>
+</odoo>

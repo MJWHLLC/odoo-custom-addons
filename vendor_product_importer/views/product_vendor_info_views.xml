@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Vendor Info Tree View -->
+    <record id="view_product_vendor_info_tree" model="ir.ui.view">
+        <field name="name">product.vendor.info.tree</field>
+        <field name="model">product.vendor.info</field>
+        <field name="arch" type="xml">
+            <tree string="Product Vendor Information">
+                <field name="product_tmpl_id"/>
+                <field name="vendor_id"/>
+                <field name="vendor_cost"/>
+                <field name="calculated_sale_price"/>
+                <field name="profit_margin"/>
+                <field name="vendor_stock_status"/>
+                <field name="is_primary_vendor"/>
+                <field name="last_sync_date"/>
+                <field name="sync_status"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Product Vendor Info Form View -->
+    <record id="view_product_vendor_info_form" model="ir.ui.view">
+        <field name="name">product.vendor.info.form</field>
+        <field name="model">product.vendor.info</field>
+        <field name="arch" type="xml">
+            <form string="Product Vendor Information">
+                <header>
+                    <button name="action_sync_from_vendor" string="Sync from Vendor" type="object" class="oe_highlight"/>
+                    <button name="action_set_as_primary" string="Set as Primary" type="object" attrs="{'invisible': [('is_primary_vendor', '=', True)]}"/>
+                    <button name="action_update_product_price" string="Update Product Price" type="object"/>
+                    <field name="sync_status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <field name="active" widget="boolean_toggle"/>
+                    </div>
+                    <group>
+                        <group name="product_info">
+                            <field name="product_tmpl_id"/>
+                            <field name="product_id"/>
+                            <field name="vendor_id"/>
+                            <field name="is_primary_vendor"/>
+                        </group>
+                        <group name="vendor_ids">
+                            <field name="vendor_product_id"/>
+                            <field name="vendor_sku"/>
+                            <field name="vendor_barcode"/>
+                            <field name="vendor_product_url" widget="url"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group name="pricing">
+                            <field name="vendor_cost"/>
+                            <field name="vendor_currency_id"/>
+                            <field name="calculated_sale_price"/>
+                            <field name="profit_margin"/>
+                        </group>
+                        <group name="stock">
+                            <field name="vendor_qty_available"/>
+                            <field name="vendor_stock_status"/>
+                            <field name="last_sync_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Vendor Details" name="vendor_details">
+                            <group>
+                                <field name="vendor_product_name"/>
+                                <field name="vendor_category"/>
+                                <field name="vendor_brand"/>
+                                <field name="vendor_weight"/>
+                                <field name="vendor_dimensions"/>
+                                <field name="vendor_shipping_cost"/>
+                            </group>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="vendor_description"/>
+                        </page>
+                        <page string="Sync Info" name="sync_info">
+                            <group>
+                                <field name="sync_error" attrs="{'invisible': [('sync_status', '!=', 'error')]}"/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Additional notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Product Vendor Info Search View -->
+    <record id="view_product_vendor_info_search" model="ir.ui.view">
+        <field name="name">product.vendor.info.search</field>
+        <field name="model">product.vendor.info</field>
+        <field name="arch" type="xml">
+            <search string="Search Product Vendor Info">
+                <field name="product_tmpl_id"/>
+                <field name="vendor_id"/>
+                <field name="vendor_product_id"/>
+                <field name="vendor_sku"/>
+                <filter string="Primary Vendor" name="primary" domain="[('is_primary_vendor', '=', True)]"/>
+                <filter string="In Stock" name="in_stock" domain="[('vendor_stock_status', '=', 'in_stock')]"/>
+                <filter string="Out of Stock" name="out_of_stock" domain="[('vendor_stock_status', '=', 'out_of_stock')]"/>
+                <separator/>
+                <filter string="Synced" name="synced" domain="[('sync_status', '=', 'synced')]"/>
+                <filter string="Pending" name="pending" domain="[('sync_status', '=', 'pending')]"/>
+                <filter string="Error" name="error" domain="[('sync_status', '=', 'error')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Vendor" name="group_vendor" context="{'group_by': 'vendor_id'}"/>
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_tmpl_id'}"/>
+                    <filter string="Stock Status" name="group_stock" context="{'group_by': 'vendor_stock_status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Product Vendor Info Action -->
+    <record id="action_product_vendor_info" model="ir.actions.act_window">
+        <field name="name">Product Vendor Information</field>
+        <field name="res_model">product.vendor.info</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No vendor information found
+            </p>
+            <p>
+                Vendor information is automatically created when products are imported.
+            </p>
+        </field>
+    </record>
+</odoo>

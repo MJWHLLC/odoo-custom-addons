@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Import Wizard Form View -->
+    <record id="view_vendor_import_wizard_form" model="ir.ui.view">
+        <field name="name">vendor.import.wizard.form</field>
+        <field name="model">vendor.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Products from Vendor">
+                <group attrs="{'invisible': [('state', '!=', 'draft')]}">
+                    <group>
+                        <field name="vendor_id"/>
+                        <field name="import_type"/>
+                    </group>
+                    <group>
+                        <field name="test_mode"/>
+                        <field name="max_products"/>
+                    </group>
+                </group>
+                
+                <group attrs="{'invisible': [('state', '!=', 'preview')]}">
+                    <group>
+                        <field name="vendor_id" readonly="1"/>
+                        <field name="import_type" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="preview_count"/>
+                        <field name="test_mode" readonly="1"/>
+                    </group>
+                    <field name="preview_message" colspan="2"/>
+                </group>
+                
+                <group attrs="{'invisible': [('state', '!=', 'done')]}">
+                    <group>
+                        <field name="vendor_id" readonly="1"/>
+                        <field name="products_created"/>
+                        <field name="products_updated"/>
+                    </group>
+                    <group>
+                        <field name="products_failed"/>
+                        <field name="import_log_id" readonly="1"/>
+                    </group>
+                </group>
+                
+                <field name="state" invisible="1"/>
+                
+                <footer>
+                    <button string="Preview" name="action_preview" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button string="Import" name="action_import" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'preview')]}"/>
+                    <button string="View Import Log" name="action_view_import_log" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                    <button string="View Products" name="action_view_products" type="object" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Import Wizard Action -->
+    <record id="action_vendor_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Products</field>
+        <field name="res_model">vendor.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_vendor_config"/>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>

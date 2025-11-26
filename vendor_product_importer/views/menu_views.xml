@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_vendor_importer_root"
+              name="Vendor Importer"
+              sequence="100"
+              web_icon="vendor_product_importer,static/description/icon.png"/>
+
+    <!-- Vendors Menu -->
+    <menuitem id="menu_vendor_importer_vendors"
+              name="Vendors"
+              parent="menu_vendor_importer_root"
+              sequence="10"/>
+
+    <menuitem id="menu_vendor_config"
+              name="Vendors"
+              parent="menu_vendor_importer_vendors"
+              action="action_vendor_config"
+              sequence="10"/>
+
+    <menuitem id="menu_import_logs"
+              name="Import Logs"
+              parent="menu_vendor_importer_vendors"
+              action="action_vendor_import_log"
+              sequence="20"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_vendor_importer_config"
+              name="Configuration"
+              parent="menu_vendor_importer_root"
+              sequence="90"/>
+
+    <menuitem id="menu_price_tiers"
+              name="Price Tiers"
+              parent="menu_vendor_importer_config"
+              action="action_product_price_tier"
+              sequence="10"/>
+
+    <menuitem id="menu_field_mappings"
+              name="Field Mappings"
+              parent="menu_vendor_importer_config"
+              action="action_product_field_mapping"
+              sequence="20"/>
+
+    <!-- Products Menu -->
+    <menuitem id="menu_vendor_products"
+              name="Products"
+              parent="menu_vendor_importer_root"
+              sequence="20"/>
+
+    <menuitem id="menu_imported_products"
+              name="Imported Products"
+              parent="menu_vendor_products"
+              action="action_imported_products"
+              sequence="10"/>
+
+    <menuitem id="menu_product_vendor_info"
+              name="Vendor Information"
+              parent="menu_vendor_products"
+              action="action_product_vendor_info"
+              sequence="20"/>
+</odoo>
