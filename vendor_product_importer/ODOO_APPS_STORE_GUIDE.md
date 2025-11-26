@@ -145,7 +145,7 @@ https://github.com/MJWHLLC/odoo-custom-addons
 
 **Branch:**
 ```
-main
+17.0
 ```
 
 **Module Path:**
