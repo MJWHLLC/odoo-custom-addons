@@ -26,8 +26,10 @@ Key Features:
 * Conflict resolution for duplicate products
 * Comprehensive logging and reporting
     """,
-    'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
+    'author': 'MJ Wilkerson Holdings LLC',
+    'website': 'https://www.mj-wilkerson-holdings-llc.com',
+    'maintainer': 'MJ Wilkerson Holdings LLC',
+    'support': 'info@mj-wilkerson-holdings-llc.odoo.com',
     'license': 'LGPL-3',
     'depends': [
         'base',
