@@ -9,7 +9,7 @@
     "data": [
         "views/3d_cad_view.xml"
     ],
-    "installable": true,
-    "application": true,
-    "auto_install": false
+    "installable": True,
+    "application": True,
+    "auto_install": False
 }
