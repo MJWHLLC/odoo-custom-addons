@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- AI Config Form View -->
+    <record id="view_ai_config_form" model="ir.ui.view">
+        <field name="name">ai.config.form</field>
+        <field name="model">ai.config</field>
+        <field name="arch" type="xml">
+            <form string="AI Configuration">
+                <header>
+                    <button name="test_connection" string="Test Connection" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="aibot_url" placeholder="http://localhost:5000"/>
+                            <field name="api_key" password="True"/>
+                        </group>
+                        <group>
+                            <field name="timeout"/>
+                            <field name="last_test_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Last Test Result" attrs="{'invisible': [('last_test_result', '=', False)]}">
+                        <field name="last_test_result" nolabel="1" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- AI Config Tree View -->
+    <record id="view_ai_config_tree" model="ir.ui.view">
+        <field name="name">ai.config.tree</field>
+        <field name="model">ai.config</field>
+        <field name="arch" type="xml">
+            <tree string="AI Configurations">
+                <field name="name"/>
+                <field name="aibot_url"/>
+                <field name="active"/>
+                <field name="last_test_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- AI Config Action -->
+    <record id="action_ai_config" model="ir.actions.act_window">
+        <field name="name">AI Configuration</field>
+        <field name="res_model">ai.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure AI Assistant Integration
+            </p>
+            <p>
+                Set up the connection to your AIbot Flask application.<br/>
+                You'll need the AIbot URL and API key to get started.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Sale Order Form View -->
+    <record id="view_sale_order_form_inherit_ai" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.ai</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_generate_ai_terms" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-file-text"
+                        string="AI Terms"
+                        help="Generate terms and conditions using AI"/>
+                <button name="action_ai_assistant" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-comments"
+                        string="AI Assistant"
+                        help="Open AI Assistant for this order"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

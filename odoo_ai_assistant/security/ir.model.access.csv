@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_config_user,ai.config.user,model_ai_config,base.group_user,1,0,0,0
+access_ai_config_manager,ai.config.manager,model_ai_config,base.group_system,1,1,1,1
+access_ai_conversation_user,ai.conversation.user,model_ai_conversation,base.group_user,1,1,1,1
+access_ai_conversation_public,ai.conversation.public,model_ai_conversation,base.group_public,0,0,0,0
