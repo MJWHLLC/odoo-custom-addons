@@ -1,0 +1,54 @@
+name: build-linux
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pylint
+        # Install Odoo external dependencies
+        pip install beautifulsoup4 requests lxml
+    
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=__pycache__,.git
+        # Exit-zero treats all errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --exclude=__pycache__,.git
+    
+    - name: Check module structure
+      run: |
+        echo "Checking Odoo module structure..."
+        for module in */; do
+          if [ -f "${module}__manifest__.py" ]; then
+            echo "✓ Found module: ${module}"
+            python -m py_compile "${module}__manifest__.py"
+          fi
+        done
+    
+    - name: Validate Python files
+      run: |
+        echo "Validating Python syntax..."
+        find . -name "*.py" -not -path "./.git/*" -not -path "./__pycache__/*" | while read file; do
+          python -m py_compile "$file" || exit 1
+        done
+        echo "✓ All Python files are valid"
